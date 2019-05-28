@@ -58,9 +58,12 @@ async def all_triggers(message: types.Message):
 async def add_trigger(message: types.Message):
     chat_id = message.chat.id
 
-    trigger_key = ''
-    if len(message.text.split(' ')) > 1:
-        trigger_key = message.text.split(' ')[1]
+    trigger_key = message.text.split(' ', 1)
+    if len(trigger_key) == 2 and len(trigger_key[1]) > 0:
+        trigger_key = trigger_key[1].strip()
+    else:
+        await message.answer('Ошибка, триггер не установлен.')
+        return
 
     if trigger_key and message.reply_to_message:
         if message.reply_to_message.audio:
@@ -119,9 +122,11 @@ async def del_trigger(message: types.Message):
     if username not in ADMINS:
         return
 
-    trigger_key = ''
-    if len(message.text.split(' ')) > 1:
-        trigger_key = message.text.split(' ')[1]
+    trigger_key = message.text.split(' ', 1)
+    if len(trigger_key) == 2 and len(trigger_key[1]) > 0:
+        trigger_key = trigger_key[1].strip()
+    else:
+        return
 
     if trigger_key:
         async with ENGINE.acquire() as conn:
@@ -144,6 +149,11 @@ async def del_trigger(message: types.Message):
 async def process_text(message: types.Message):
     chat_id = message.chat.id
     text = message.text
+
+    s = text.lower().strip()
+    if s == 'cписок триггеров':
+        await all_triggers(message)
+        return
 
     async with ENGINE.acquire() as conn:
         res = await conn.execute(local_triggers.
