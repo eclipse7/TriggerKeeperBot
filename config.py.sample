@@ -1,0 +1,10 @@
+API_TOKEN = 'token'
+
+DATABASE = {
+    'user': 'user',
+    'database': 'db',
+    'password': 'pass',
+    'host': 'localhost'
+}
+
+ADMINS = ('username',)
