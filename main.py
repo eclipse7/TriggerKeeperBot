@@ -151,7 +151,7 @@ async def process_text(message: types.Message):
     text = message.text
 
     s = text.lower().strip()
-    if s == 'cписок триггеров':
+    if s == 'список триггеров':
         await all_triggers(message)
         return
 
