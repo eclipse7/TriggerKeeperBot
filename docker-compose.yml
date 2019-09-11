@@ -1,0 +1,20 @@
+version: '3.7'
+services:
+  db:
+    image: postgres:10.1-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: trigger_bot
+      POSTGRES_USER: trigger_bot
+      POSTGRES_PASSWORD: trigger_bot
+
+  bot:
+    build: ./
+    restart: always
+    volumes:
+      - ./app:/app
+    depends_on:
+      - db
+    command: python main.py
+
+
