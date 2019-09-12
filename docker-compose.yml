@@ -3,6 +3,8 @@ services:
   db:
     image: postgres:alpine
     restart: always
+    volumes:
+      - database_volume:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: trigger_bot
       POSTGRES_USER: trigger_bot
@@ -17,4 +19,5 @@ services:
       - db
     command: python main.py
 
-
+volumes:
+  database_volume:
